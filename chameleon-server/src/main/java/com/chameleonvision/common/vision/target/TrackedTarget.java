@@ -18,6 +18,14 @@ public class TrackedTarget {
     private Point targetOffsetPoint = null;
     private Point robotOffsetPoint = null;
 
+    public RotatedRect minAreaRect;
+
+    public Point getPoint() {
+        return targetOffsetPoint;
+    }
+
+    private double pitch, yaw, area;
+
     // Single Grouped
     public TrackedTarget(Contour inputContour) {
         mainContour = inputContour;
@@ -79,8 +87,8 @@ public class TrackedTarget {
     private Point calculateOffsetPoint(boolean isLandscape, TargetOffsetPointRegion offsetRegion) {
         Point[] vertices = new Point[4];
 
-        RotatedRect minRect = mainContour.getMinAreaRect();
-        minRect.points(vertices);
+        minAreaRect = mainContour.getMinAreaRect();
+        minAreaRect.points(vertices);
 
         Point bl = getMiddle(vertices[0], vertices[1]);
         Point tl = getMiddle(vertices[1], vertices[2]);
@@ -88,12 +96,12 @@ public class TrackedTarget {
         Point br = getMiddle(vertices[3], vertices[0]);
         boolean orientation;
         if (isLandscape) {
-            orientation = minRect.size.width > minRect.size.height;
+            orientation = minAreaRect.size.width > minAreaRect.size.height;
         } else {
-            orientation = minRect.size.width < minRect.size.height;
+            orientation = minAreaRect.size.width < minAreaRect.size.height;
         }
 
-        Point result = minRect.center;
+        Point result = minAreaRect.center;
         switch (offsetRegion) {
             case Top:
                 {
@@ -150,6 +158,7 @@ public class TrackedTarget {
                         (offsetPoint.y * offsetEquationValues.getSecond()) + offsetEquationValues.getFirst();
                 break;
         }
+
         return resultPoint;
     }
 
@@ -191,6 +200,10 @@ public class TrackedTarget {
     public enum TargetContourGrouping {
         Single,
         Dual
+    }
+
+    public enum TargetOrientation {
+        Portrait, Landscape
     }
 
     public enum TargetOffsetPointRegion {
