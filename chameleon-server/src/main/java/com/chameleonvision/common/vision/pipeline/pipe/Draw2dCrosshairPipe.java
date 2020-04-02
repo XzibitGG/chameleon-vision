@@ -52,5 +52,11 @@ public class Draw2dCrosshairPipe
         public Point calibrationPoint;
         public boolean showCrosshair = true;
         public Color crosshairColor = Color.GREEN;
+        public Draw2dCrosshairParams(TrackedTarget.RobotOffsetPointMode calibrationMode, Point calibrationPoint, boolean showCrosshair, Color crosshairColor){
+            this.calibrationMode = calibrationMode;
+            this.calibrationPoint = calibrationPoint;
+            this.showCrosshair = showCrosshair;
+            this.crosshairColor = crosshairColor;
+        }
     }
 }
