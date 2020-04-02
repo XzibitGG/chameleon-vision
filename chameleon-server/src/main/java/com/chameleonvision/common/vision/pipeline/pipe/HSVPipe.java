@@ -8,7 +8,10 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class HSVPipe extends CVPipe<Mat, Mat, HSVPipe.HSVParams> {
-
+    //Throws unsatisfied link error without loading core library
+    static{
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
     private Mat m_outputMat = new Mat();
 
     @Override
